@@ -105,10 +105,12 @@ class Readability:
 
 
 if __name__ == "__main__":
+    # Acquire arguments from the command line
     parser = argparse.ArgumentParser(description='Text analysis via URL.')
     parser.add_argument('-url', type=str, help='URL of Article')
     args = parser.parse_args()
     url = args.url
+    # Begin parsing the article at the URL
     a = Article(url)
     print 'Retrieving article at URL: ', url
     a.download()
@@ -116,6 +118,7 @@ if __name__ == "__main__":
     a.parse()
     print 'Article parsed.'
     text = a.text
+    # Run NLP on the text to get important metadata
     a.nlp()
     title = a.title
     summary = a.summary
@@ -123,8 +126,8 @@ if __name__ == "__main__":
     seo_terms = []
     for word in keywords:
         seo_terms.append(str(word))
+    # Output what we have learned
     print 'Article title:    ', title
-    # print 'Article summary:  ', summary
     print 'Article text:     ', text
     rd = Readability(str(text))
     spoken_dur = rd.analyzedVars['word_cnt'] / 2.5 / 60  # approx minutes
@@ -142,3 +145,6 @@ if __name__ == "__main__":
     print 'Reading grade level:     ', read_level
     print 'Approx. spoken duration: ', str(spoken_dur), ' minutes'
     print 'Article keywords:        ', seo_terms
+    print ''
+    print 'Article summary:         '
+    print str(summary)
